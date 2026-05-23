@@ -59,7 +59,7 @@ jobs:
               uses: docker/build-push-action@v6
               with:
                 context: ${{inputs.context}}
-                file: ${{inputs.docker_path}}
+                file: ${{inputs.docker_path}}/Dockerfile
                 push: ${{inputs.push_image}}
                 tags: ${{steps.meta.outputs.image}}
                 cache-from: type=gha
