@@ -9,6 +9,10 @@ on:
                 required: true
                 type: string
                 default: guruhbk
+            context:
+                required: true
+                type: string
+                default: .
             docker_path:
                 required: true
                 type: string
@@ -36,28 +40,28 @@ jobs:
         outputs: 
             image: ${{steps.meta.outputs.image}}
         
-            steps:
-                - name: checkout repository
-                  uses: actions/checkout@v4
-                - name: set image
-                  id: meta 
-                  run: |
-                    IMAGE="${{inputs.registry}}/${{inputs.image_name}}:${{inputs.image_tag}}"
-                    echo "image=$IMAGE" >> $GITHUB_OUTPUT
-                - name: setup docker buildx
-                  uses: docker/setup-buildx-action@v3
-                - name: login to registry
-                  uses: docker/build-push-action@v6
-                  with:
-                    context: ${{inputs.context}}
-                    file: ${{inputs.docker}}
-                    push: ${{inputs.push_image}}
-                    tags: ${{steps.meta.outputs.image}}
-                    cache-from: type=gha
-                    cache-to: type=gha,mode=max
+        steps:
+            - name: checkout repository
+              uses: actions/checkout@v4
+            - name: set image
+              id: meta 
+              run: |
+                IMAGE="${{inputs.registry}}/${{inputs.image_name}}:${{inputs.image_tag}}"
+                echo "image=$IMAGE" >> $GITHUB_OUTPUT
+            - name: setup docker buildx
+              uses: docker/setup-buildx-action@v3
+            - name: login to registry
+              uses: docker/build-push-action@v6
+              with:
+                context: ${{inputs.context}}
+                file: ${{inputs.docker_path}}
+                push: ${{inputs.push_image}}
+                tags: ${{steps.meta.outputs.image}}
+                cache-from: type=gha
+                cache-to: type=gha,mode=max
 
 
 
 
-                
             
+        
