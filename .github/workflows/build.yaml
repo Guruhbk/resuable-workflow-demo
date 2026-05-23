@@ -5,11 +5,10 @@ on:
             - main
 jobs:
     docker:
-        uses: ./github/workflows/reusable-ci/yaml
+        uses: ./github/workflows/reusable-ci.yaml
         with:
             image_name: reusable-workflow
             image_tag: ${{github.sha}}
         secrets:
             registry_username: ${{secrets.REGISTRY_USERNAME }}
             registry_password: ${{secrets.REGISTRY_PASSWORD}}
-            
